@@ -1,5 +1,3 @@
-const user = require("express").router();
-
-user.get();
+const user = require("express").Router();
 
 module.exports = user;
