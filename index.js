@@ -24,7 +24,7 @@ mongoose
 
 /* Routing */
 app.use("/api/users", userRoute);
-app.use("/register", authRoute);
+app.use("/api", authRoute);
 
 app.get("/", (req, res) => {});
 app.listen(process.env.PORT || 3001, () => {
