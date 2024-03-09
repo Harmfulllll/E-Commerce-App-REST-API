@@ -1,7 +1,9 @@
 const user = require("express").Router();
 const userInfo = require("../models/userModel");
 const cryptojs = require("crypto-js");
+const jwt = require("jsonwebtoken");
 
+/* Register route */
 user.post("/register", async (req, res) => {
   const newUser = new userInfo({
     username: req.body.username,
@@ -23,6 +25,7 @@ user.post("/register", async (req, res) => {
   }
 });
 
+/* Login route */
 user.post("/login", async (req, res) => {
   try {
     const data = await userInfo.findOne({ username: req.body.username });
@@ -30,12 +33,17 @@ user.post("/login", async (req, res) => {
     const pass = cryptojs.AES.decrypt(
       data.password,
       process.env.PASSWORD_SECRET
-    );
-    const pass1 = pass.toString(cryptojs.enc.Utf8);
-    if (pass1 !== req.body.password) {
+    ).toString(cryptojs.enc.Utf8);
+    if (pass !== req.body.password) {
       return res.status(500).json({ message: "No user found" });
     }
-    return res.status(200).json({ message: "User found" });
+    const token = jwt.sign(
+      { id: data.id, isAdmin: data.isAdmin },
+      process.env.JWT_TOKEN,
+      { expiresIn: "2h" }
+    );
+    const { password, ...others } = data._doc;
+    return res.status(200).json({ ...others, token });
   } catch (err) {
     res.status(500).json(err);
   }
