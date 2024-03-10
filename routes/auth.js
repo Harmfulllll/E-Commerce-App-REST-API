@@ -30,10 +30,12 @@ user.post("/login", async (req, res) => {
   try {
     const data = await userInfo.findOne({ username: req.body.username });
     if (!data) return res.status(500).json({ message: "No user found" });
+
     const pass = cryptojs.AES.decrypt(
       data.password,
       process.env.PASSWORD_SECRET
     ).toString(cryptojs.enc.Utf8);
+
     if (pass !== req.body.password) {
       return res.status(500).json({ message: "No user found" });
     }

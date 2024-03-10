@@ -8,9 +8,9 @@ const modelSchema = new mongoose.Schema(
     size: { type: String },
     price: { type: Number, required: true },
     color: { type: String },
-    categories: { type: Array },
+    category: { type: Array },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Model", modelSchema);
+module.exports = mongoose.model("Product", modelSchema);
