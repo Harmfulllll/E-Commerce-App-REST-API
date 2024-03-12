@@ -13,6 +13,8 @@ const dotenv = require("dotenv");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const productRoute = require("./routes/product");
+const cartRoute = require("./routes/cart");
+const orderRoute = require("./routes/order");
 
 app.use(bodyParser.json());
 dotenv.config();
@@ -27,6 +29,8 @@ mongoose
 app.use("/api/users", userRoute);
 app.use("/api", authRoute);
 app.use("/api/products", productRoute);
+app.use("/api/carts", cartRoute);
+app.use("/api/orders", orderRoute);
 
 app.get("/", (req, res) => {});
 app.listen(process.env.PORT || 3001, () => {
